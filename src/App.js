@@ -3,10 +3,14 @@ import { MissionUtils } from '@woowacourse/mission-utils';
 class App {
   async play() {
     const computer = this.getComputerNumber();
-    console.log(computer);
     const user = await MissionUtils.Console.readLineAsync('');
-    console.log(user);
+    console.log(this.getUserNumberList(user));
   }
+
+  getUserNumberList(numbers) {
+    return [...numbers].map((number) => parseInt(number));
+  }
+
   getComputerNumber() {
     const computer = [];
     while (computer.length < 3) {
