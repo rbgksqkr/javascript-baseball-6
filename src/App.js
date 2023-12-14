@@ -1,4 +1,5 @@
 import { MissionUtils } from '@woowacourse/mission-utils';
+import InputView from './InputView.js';
 import OutputView from './OutputView.js';
 import Validator from './Validator.js';
 
@@ -10,17 +11,16 @@ class App {
   }
 
   async startGame(computer) {
-    const userInput = await MissionUtils.Console.readLineAsync('숫자를 입력해주세요 : ');
+    const userInput = await InputView.readUserNumber();
     const user = this.getUserNumberList(userInput);
     Validator.isNumber(user);
     Validator.isValidDiff(user);
     Validator.isValidLength(user);
+    Validator.isValidRange(user);
     const result = this.getBaseballResult(computer, user);
     if (result === 1) {
       OutputView.printEndGame();
-      const answer = await MissionUtils.Console.readLineAsync(
-        '게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.\n'
-      );
+      const answer = await InputView.readAfterGame();
       if (answer == 1) {
         await this.play();
       }
