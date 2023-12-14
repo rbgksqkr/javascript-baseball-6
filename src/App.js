@@ -19,28 +19,32 @@ class App {
     Validator.isValidRange(user);
     const result = this.getGameResult(computer, user);
     if (result === 1) {
-      OutputView.printEndGame();
-      const answer = await InputView.readAfterGame();
-      if (answer == 1) {
-        await this.play();
-      }
+      await this.afterGame();
       return;
     }
     await this.startGame(computer);
   }
 
+  async afterGame() {
+    OutputView.printEndGame();
+    const answer = await InputView.readAfterGame();
+    if (answer == 1) {
+      await this.play();
+    }
+  }
+
   getBaseballResult(computer, user) {
-    const gameResult = { strike: 0, ball: 0 };
+    const baseballResult = { strike: 0, ball: 0 };
     for (let i = 0; i < computer.length; i++) {
       if (user[i] === computer[i]) {
-        gameResult.strike += 1;
+        baseballResult.strike += 1;
         continue;
       }
       if (computer.includes(user[i])) {
-        gameResult.ball += 1;
+        baseballResult.ball += 1;
       }
     }
-    return gameResult;
+    return baseballResult;
   }
 
   getGameResult(computer, user) {
@@ -48,9 +52,6 @@ class App {
 
     if (ball === 0 && strike === 0) {
       MissionUtils.Console.print(`낫싱`);
-    } else if (strike === 3) {
-      MissionUtils.Console.print(`${strike}스트라이크`);
-      return 1;
     } else if (ball > 0 && strike === 0) {
       MissionUtils.Console.print(`${ball}볼`);
     } else if (strike > 0 && ball === 0) {
@@ -58,6 +59,8 @@ class App {
     } else if (ball > 0 && strike > 0) {
       MissionUtils.Console.print(`${ball}볼 ${strike}스트라이크`);
     }
+
+    if (strike === 3) return 1;
     return 0;
   }
 
