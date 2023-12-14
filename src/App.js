@@ -17,7 +17,7 @@ class App {
     Validator.isValidDiff(user);
     Validator.isValidLength(user);
     Validator.isValidRange(user);
-    const result = this.getBaseballResult(computer, user);
+    const result = this.getGameResult(computer, user);
     if (result === 1) {
       OutputView.printEndGame();
       const answer = await InputView.readAfterGame();
@@ -30,18 +30,22 @@ class App {
   }
 
   getBaseballResult(computer, user) {
-    console.log(computer, user);
-    let strike = 0;
-    let ball = 0;
+    const gameResult = { strike: 0, ball: 0 };
     for (let i = 0; i < computer.length; i++) {
       if (user[i] === computer[i]) {
-        strike += 1;
+        gameResult.strike += 1;
         continue;
       }
       if (computer.includes(user[i])) {
-        ball += 1;
+        gameResult.ball += 1;
       }
     }
+    return gameResult;
+  }
+
+  getGameResult(computer, user) {
+    const { strike, ball } = this.getBaseballResult(computer, user);
+
     if (ball === 0 && strike === 0) {
       MissionUtils.Console.print(`낫싱`);
     } else if (strike === 3) {
