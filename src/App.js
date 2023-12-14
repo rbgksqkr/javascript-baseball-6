@@ -1,22 +1,28 @@
 import { MissionUtils } from '@woowacourse/mission-utils';
+import OutputView from './OutputView.js';
 
 class App {
   async play() {
-    MissionUtils.Console.print('숫자 야구 게임을 시작합니다.');
+    OutputView.printStartGame();
     const computer = this.getComputerNumber();
-    console.log(computer);
+    await this.startGame(computer);
+  }
+
+  async startGame(computer) {
     const userInput = await MissionUtils.Console.readLineAsync('숫자를 입력해주세요 : ');
     const user = this.getUserNumberList(userInput);
     const result = this.getBaseballResult(computer, user);
     if (result === 1) {
-      MissionUtils.Console.print('3개의 숫자를 모두 맞히셨습니다! 게임 종료');
+      OutputView.printEndGame();
       const answer = await MissionUtils.Console.readLineAsync(
         '게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.\n'
       );
       if (answer == 1) {
         await this.play();
       }
+      return;
     }
+    await this.startGame(computer);
   }
 
   getBaseballResult(computer, user) {
@@ -34,7 +40,6 @@ class App {
     }
     if (ball === 0 && strike === 0) {
       MissionUtils.Console.print(`낫싱`);
-      return 0;
     } else if (strike === 3) {
       MissionUtils.Console.print(`${strike}스트라이크`);
       return 1;
@@ -45,6 +50,7 @@ class App {
     } else if (ball > 0 && strike > 0) {
       MissionUtils.Console.print(`${ball}볼 ${strike}스트라이크`);
     }
+    return 0;
   }
 
   getUserNumberList(numbers) {
