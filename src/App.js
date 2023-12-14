@@ -1,5 +1,6 @@
 import { MissionUtils } from '@woowacourse/mission-utils';
 import OutputView from './OutputView.js';
+import Validator from './Validator.js';
 
 class App {
   async play() {
@@ -11,6 +12,9 @@ class App {
   async startGame(computer) {
     const userInput = await MissionUtils.Console.readLineAsync('숫자를 입력해주세요 : ');
     const user = this.getUserNumberList(userInput);
+    // Validator.isNumber(user);
+    // Validator.isValidDiff(user);
+    Validator.isValidLength(user);
     const result = this.getBaseballResult(computer, user);
     if (result === 1) {
       OutputView.printEndGame();
