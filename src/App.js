@@ -8,6 +8,7 @@ class App {
     OutputView.printStartGame();
     const computer = this.getComputerNumber();
     await this.startGame(computer);
+    await this.afterGame();
   }
 
   async startGame(computer) {
@@ -18,11 +19,9 @@ class App {
     Validator.isValidLength(user);
     Validator.isValidRange(user);
     const result = this.getGameResult(computer, user);
-    if (result === 1) {
-      await this.afterGame();
-      return;
+    if (result == 0) {
+      await this.startGame(computer);
     }
-    await this.startGame(computer);
   }
 
   async afterGame() {
